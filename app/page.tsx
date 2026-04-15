@@ -1,35 +1,21 @@
 import Link from 'next/link';
-import { humidorData } from '@/lib/data';
-import { Star } from 'lucide-react';
+import { getAllCigarettes } from '@/lib/data'; 
 
-export default function Home() {
+export default async function Home() {
+  const cigarettes = await getAllCigarettes(); 
+
   return (
-    <main className="max-w-6xl mx-auto px-6 py-12">
-      <div className="mb-12 flex justify-between items-end">
-        <h2 className="font-serif text-3xl italic text-primary/80">Trending in the Humidor</h2>
-      </div>
-
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
-        {humidorData.map((cig) => (
-          <Link key={cig.id} href={`/cigarette/${cig.id}`} className="group block">
-            <div className="pack-poster rounded-sm p-6 flex flex-col justify-between mb-4">
-              <span className="text-[10px] font-mono text-primary/20 uppercase tracking-widest">
-                {cig.region}
-              </span>
-              <div className="py-12">
-                <h3 className="font-serif text-2xl font-bold leading-tight group-hover:text-accent transition-colors">
-                  {cig.brand}
-                </h3>
-                <p className="text-xs italic text-primary/40 mt-1">{cig.line}</p>
-              </div>
-              <div className="flex items-center gap-2 border-t border-white/5 pt-4">
-                <Star size={12} className="text-accent fill-accent" />
-                <span className="font-mono text-xs text-primary/80">{cig.rating}</span>
-              </div>
-            </div>
+    <main style={{ padding: '20px', backgroundColor: '#000', color: '#ffbf00', minHeight: '100vh' }}>
+      <h1>Amber Humidor</h1>
+      <div style={{ display: 'grid', gap: '20px', marginTop: '20px' }}>
+        {cigarettes.map((c) => (
+          <Link key={c.id} href={`/cigarette/${c.id}`} style={{ border: '1px solid #333', padding: '15px', borderRadius: '8px', textDecoration: 'none', color: 'inherit', display: 'block' }}>
+            <h3 style={{ margin: 0 }}>{c.brand_name} {c.variant}</h3>
+            <p style={{ color: '#888' }}>{c.blend_type} • {c.origin}</p>
           </Link>
         ))}
       </div>
+      <Link href="/add" style={{ marginTop: '20px', display: 'inline-block', color: '#fff' }}>+ Add New Blend</Link>
     </main>
   );
 }
