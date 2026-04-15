@@ -1,3 +1,4 @@
+import Link from "next/link"; // Add this line
 import "./globals.css";
 
 export default function RootLayout({
@@ -7,7 +8,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body style={{ backgroundColor: "#000", minHeight: "100vh" }}>
+      <body style={{ backgroundColor: "#000", minHeight: "100vh", margin: 0 }}>
         <nav
           style={{
             padding: "20px 40px",
@@ -17,7 +18,8 @@ export default function RootLayout({
             alignItems: "center",
           }}
         >
-          <a
+          {/* Use <Link> instead of <a> to make the error go away */}
+          <Link
             href="/"
             style={{
               color: "#ffbf00",
@@ -28,8 +30,8 @@ export default function RootLayout({
             }}
           >
             Amber.
-          </a>
-          <a
+          </Link>
+          <Link
             href="/profile"
             style={{
               color: "#ffbf00",
@@ -39,7 +41,7 @@ export default function RootLayout({
             }}
           >
             PROFILE
-          </a>
+          </Link>
         </nav>
         {children}
       </body>

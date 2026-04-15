@@ -2,6 +2,7 @@
 .humidor-card:hover {
     border-color: #ffbf00 !important;
     background-color: #0a0a0a;
+    transform: translateY(-2px);
 }
 
 /* Fixes for wonky spacing */
