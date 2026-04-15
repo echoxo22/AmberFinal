@@ -1,27 +1,22 @@
-export const dynamic = 'force-dynamic';
-import { getCigaretteById } from '@/lib/data'; // Make sure this exists
+import Link from 'next/link';
+import { getAllCigarettes } from '@/lib/data'; // Switch to this
+import { Star } from 'lucide-react';
 
-export default async function CigarettePage({ params }: { params: { id: string } }) {
-  // OLD MOCK WAY (Delete this):
-  // const cigarette = humidorData.find(c => c.id === params.id);
-
-  // NEW DATABASE WAY:
-  const cigarette = await getCigaretteById(params.id);
-
-  if (!cigarette) {
-    return (
-      <main style={{ backgroundColor: '#000', color: '#ffbf00', height: '100vh', padding: '20px' }}>
-        <h1>Blend not found</h1>
-        <p>Searching for ID: {params.id}</p>
-      </main>
-    );
-  }
+export default async function Home() {
+  const cigarettes = await getAllCigarettes(); // Fetch the real data
 
   return (
-    <main>
-      <h1>{cigarette.brand_name} {cigarette.variant}</h1>
-      <p>Origin: {cigarette.origin}</p>
-      {/* ... the rest of your UI */}
+    <main style={{ padding: '20px', backgroundColor: '#000', color: '#ffbf00', minHeight: '100vh' }}>
+      <h1>Amber Humidor</h1>
+      <div style={{ display: 'grid', gap: '20px', marginTop: '20px' }}>
+        {cigarettes.map((c) => (
+          <Link key={c.id} href={`/cigarette/${c.id}`} style={{ border: '1px solid #333', padding: '15px', borderRadius: '8px', textDecoration: 'none', color: 'inherit' }}>
+            <h3>{c.brand_name} {c.variant}</h3>
+            <p>{c.blend_type} • {c.origin}</p>
+          </Link>
+        ))}
+      </div>
+      <Link href="/add" style={{ marginTop: '20px', display: 'inline-block', color: '#fff' }}>+ Add New Blend</Link>
     </main>
   );
 }

@@ -1,6 +1,12 @@
+import { query } from './db';
+
+export async function getAllCigarettes() {
+    const res = await query('SELECT * FROM cigarettes ORDER BY id DESC');
+    return res.rows;
+}
+
 export async function getCigaretteById(id: string) {
-    // We parse the string ID to an Integer just to be safe
-    const numericId = parseInt(id, 10); 
-    const result = await query('SELECT * FROM cigarettes WHERE id = $1', [numericId]);
-    return result.rows[0]; 
+    const numericId = parseInt(id, 10);
+    const res = await query('SELECT * FROM cigarettes WHERE id = $1', [numericId]);
+    return res.rows[0];
 }
