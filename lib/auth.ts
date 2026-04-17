@@ -8,6 +8,7 @@ const sql = postgres(
 );
 
 export const authOptions: NextAuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET || "amber_default_secret_key_secure_2024",
   session: { strategy: "jwt" },
   pages: { signIn: "/login" },
   providers: [
