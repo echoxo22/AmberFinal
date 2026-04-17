@@ -1,22 +1,29 @@
-import { NextResponse } from 'next/server';
-import { query } from '@/lib/db';
+import { NextResponse } from "next/server";
+import postgres from "postgres";
+
+// Use the connection string from your psql terminal earlier
+const sql = postgres(
+  "postgres://admin:H5taeYPOZflt4BgoOrGf7UkDznE6HbyL@dpg-d7frcpreo5us73f4jm8g-a.singapore-postgres.render.com/amber_bnb1?sslmode=require",
+);
 
 export async function POST(request: Request) {
-    const data = await request.json();
-    const { brand, variant, taste, smoothness, burn, aroma, smoke_body, packaging_design } = data;
+  try {
+    const body = await request.json();
 
-    const scores = [taste, smoothness, burn, aroma, smoke_body, packaging_design];
-    const isValid = scores.every(s => s >= 0 && s <= 5 && (s * 2) % 1 === 0);
+    // This inserts the 7 parameters directly into your Postgres table
+    const result = await sql`
+      INSERT INTO reviews (
+        cigarette_id, taste, smoothness, burn_quality, aroma, smoke_body, packaging, overall
+      ) VALUES (
+        ${body.cigarette_id}, ${body.taste}, ${body.smoothness}, ${body.burn_quality},
+        ${body.aroma}, ${body.smoke_body}, ${body.packaging}, ${body.overall}
+      )
+      RETURNING *
+    `;
 
-    if (!isValid) return NextResponse.json({ error: "Invalid ratings" }, { status: 400 });
-
-    const avg = scores.reduce((a, b) => a + b) / scores.length;
-
-    // This saves it to your new Render database
-    await query(
-        'INSERT INTO reviews (brand, variant, taste, smoothness, burn, aroma, body, packaging, overall) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
-        [brand, variant, taste, smoothness, burn, aroma, smoke_body, packaging_design, avg]
-    );
-
-    return NextResponse.json({ message: "Review Saved!", overall: avg.toFixed(2) });
+    return NextResponse.json(result[0]);
+  } catch (error: any) {
+    console.error("DB Error:", error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
 }
