@@ -35,12 +35,17 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user }) {
-      if (user) token.id = user.id;
+      if (user) {
+        token.id = user.id;
+        // Pre-designate an admin email here
+        token.isAdmin = user.email === "admin@amber.com";
+      }
       return token;
     },
     async session({ session, token }) {
       if (token && session.user) {
         (session.user as any).id = token.id;
+        (session.user as any).isAdmin = token.isAdmin;
       }
       return session;
     },

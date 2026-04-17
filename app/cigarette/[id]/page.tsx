@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 
 const params = [
@@ -20,6 +20,14 @@ export default function CigarettePage() {
   const [ratings, setRatings] = useState(
     Object.fromEntries(params.map((p) => [p, 0.0])),
   );
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    // Fetch session on mount to check for admin privileges
+    fetch("/api/auth/session")
+      .then((res) => res.json())
+      .then((session) => setIsAdmin(session?.user?.isAdmin || false));
+  }, []);
 
   async function handleSubmit() {
     const payload = {
@@ -35,6 +43,16 @@ export default function CigarettePage() {
       body: JSON.stringify(payload),
     });
 
+    if (res.ok) {
+      router.push("/");
+      router.refresh();
+    }
+  }
+
+  async function handleDelete() {
+    if (!confirm("Are you sure you want to delete this entry?")) return;
+    
+    const res = await fetch(`/api/cigarette/${id}`, { method: "DELETE" });
     if (res.ok) {
       router.push("/");
       router.refresh();
@@ -99,6 +117,15 @@ export default function CigarettePage() {
           >
             POST REVIEW
           </button>
+
+          {isAdmin && (
+            <button 
+              onClick={handleDelete}
+              className="w-full bg-red-900/20 text-red-500 border border-red-900/50 font-black py-4 mt-4 uppercase tracking-widest hover:bg-red-900 hover:text-white transition-all"
+            >
+              DELETE CIGARETTE
+            </button>
+          )}
         </div>
 
         <div className="text-zinc-600 text-[10px] uppercase leading-relaxed tracking-widest space-y-4">

@@ -46,12 +46,20 @@ export default async function RootLayout({
                 </a>
               </>
             ) : (
-              <Link
-                href="/login"
-                className="text-[10px] font-bold tracking-[0.2em] text-[#FFB800] hover:text-white uppercase transition-colors"
-              >
-                LOGIN
-              </Link>
+              <>
+                <Link
+                  href="/login"
+                  className="text-[10px] font-bold tracking-[0.2em] text-zinc-500 hover:text-white uppercase transition-colors"
+                >
+                  LOGIN
+                </Link>
+                <Link
+                  href="/signup"
+                  className="text-[10px] font-bold tracking-[0.2em] text-[#FFB800] hover:text-white uppercase transition-colors"
+                >
+                  SIGN UP
+                </Link>
+              </>
             )}
           </nav>
         </header>
