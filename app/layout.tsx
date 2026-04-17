@@ -8,24 +8,33 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-black text-white min-h-screen">
-        <header className="flex justify-between items-center px-10 py-6 border-b border-zinc-900">
+      <body className="bg-[#030303] text-zinc-200 min-h-screen font-sans selection:bg-[#FFB800] selection:text-black antialiased">
+        <header className="sticky top-0 z-50 bg-[#030303]/80 backdrop-blur-xl flex justify-between items-center px-6 md:px-12 py-5 border-b border-white/5">
           <Link
             href="/"
-            className="text-[#ffbf00] font-black text-2xl tracking-tighter"
+            className="group flex items-center gap-2"
           >
-            Amber.
+            <div className="w-3 h-3 bg-[#FFB800] rounded-sm group-hover:scale-110 group-hover:rotate-12 transition-all duration-300 shadow-[0_0_15px_rgba(255,184,0,0.4)]"></div>
+            <span className="text-white font-black text-2xl tracking-tighter group-hover:text-[#FFB800] transition-colors">
+              Amber.
+            </span>
           </Link>
-          <div className="flex gap-8 items-center">
+          <nav className="flex gap-8 items-center">
+            <Link
+              href="/"
+              className="text-[10px] font-bold tracking-[0.2em] text-zinc-500 hover:text-[#FFB800] uppercase transition-colors"
+            >
+              HUMIDOR
+            </Link>
             <Link
               href="/profile"
-              className="text-[10px] font-bold tracking-[0.2em] text-zinc-500 hover:text-[#ffbf00] uppercase transition-colors"
+              className="text-[10px] font-bold tracking-[0.2em] text-zinc-500 hover:text-[#FFB800] uppercase transition-colors"
             >
               PROFILE
             </Link>
-          </div>
+          </nav>
         </header>
-        <main className="p-10">{children}</main>
+        <main className="pb-24 pt-6">{children}</main>
       </body>
     </html>
   );
