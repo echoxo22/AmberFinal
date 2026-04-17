@@ -21,12 +21,6 @@ export default function RootLayout({
           </Link>
           <nav className="flex gap-8 items-center">
             <Link
-              href="/"
-              className="text-[10px] font-bold tracking-[0.2em] text-zinc-500 hover:text-[#FFB800] uppercase transition-colors"
-            >
-              HUMIDOR
-            </Link>
-            <Link
               href="/profile"
               className="text-[10px] font-bold tracking-[0.2em] text-zinc-500 hover:text-[#FFB800] uppercase transition-colors"
             >
